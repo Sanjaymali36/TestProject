@@ -1,0 +1,12 @@
+h1,h3 {
+  color: black;
+}
+
+body {
+  background-color: #e3f2fd;
+}
+
+#home-content {
+  text-align: center;
+  padding-top: 20%
+}

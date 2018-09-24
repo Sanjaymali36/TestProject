@@ -1,0 +1,45 @@
+{% extends 'base.html' %}
+{% block extra_head %}
+    <script defer src="https://use.fontawesome.com/releases/v5.3.1/js/all.js"
+        integrity="sha384-kW+oWsYx3YpxvjtZjFXqazFpA7UP/MbiY4jvs+RWZo2+N94PFZ36T6TFkc9O3qoB"
+        crossorigin="anonymous">
+    </script>
+{% endblock %}
+{% block content %}
+{% if messages %}
+  <ul class="messages">
+      {% for message in messages %}
+      <li{% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</li>
+      {% endfor %}
+  </ul>
+{% endif %}
+<div class="container">
+  {{blog}} - {{ blog.num_votes }} vote's
+    <form action="{% url 'BlogApp:vote' blog.id %}" method="post">
+      {% csrf_token %}
+      {% for choice in blog.choice_set.all %}
+        <input type="radio"
+          name="choice"
+          id="choice{{ forloop.counter }}"
+          value="{{ choice.id }}"/>
+        <label for="choice{{ forloop.counter }}">{{ choice.choice_text }} - {{ choice.num_votes }}</label>
+      <br/>
+      {% endfor %}
+      <input class="btn btn-primary mb" type="submit" value="Vote" {% if not user_can_vote %}disabled{% endif %}/>
+    </form>
+    {% if not user_can_vote %}
+      {% for choice_dict in result %}
+        <div class="row">
+          <div class="col-sm-6 offset-sm3">
+            {{ choice_dict.text }}
+          <div class="progress">
+            <div class="progress-bar" role="progressbar" style="width: {{ choice_dict.percentage}}%;">{{choice_dict.num_votes}}</div>
+          </div>
+        </div>
+      </div>
+      {% endfor %}
+    {% else %}
+      <p>Vote to see the result!</p>
+    {% endif %}
+</div>
+{% endblock %}
