@@ -1,0 +1,38 @@
+{% extends 'base.html' %}
+
+{% block breadcrumb %}
+    <li class="breadcrumb-item active"> <h3>Welcome to BodhiAI Blogs</h3></li>
+{% endblock %}
+
+
+{% block content %}
+  <table class="table">
+    <thead class="thead-inverse">
+      <tr>
+        <th>Blog Category</th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for category in categories %}
+        <tr>
+          <td>
+            <a href="{% url 'category_topics' category.pk %}">{{ category.name }}</a>
+            <small class="text-muted d-block">{{category.description }}</small>
+          </td>
+          <td class="align-middle">
+            {% with post=category.get_last_post %}
+              {% if post %}
+                <small>
+                  <a href="{% url 'topic_posts' category.pk post.topic.pk %}">
+                    By {{ post.created_by.username }} at {{ post.created_at }}
+                  </a>
+                </small>
+              {% else %}
+              {% endif %}
+            {% endwith %}
+          </td>
+        </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+{% endblock %}

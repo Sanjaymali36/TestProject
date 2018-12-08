@@ -1,0 +1,33 @@
+{% extends 'base.html' %}
+
+{% block title %}
+  {{ category.name }} - {{ block.super }}
+{% endblock %}
+
+{% block breadcrumb %}
+  <li class="breadcrumb-item"><a href="{% url 'home' %}">Categories</a></li>
+  <li class="breadcrumb-item active">{{ categoy.name }}</li>
+{% endblock %}
+
+{% block content %}
+
+
+  <table class="table">
+    <thead class="thead-inverse">
+      <tr>
+        <th>Topic</th>
+        <th>Publisher</th>
+        <th>Publish Date</th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for topic in topics %}
+        <tr>
+          <td><a href="{% url 'topic_posts' category.pk topic.pk %}">{{ topic.subject }}</a></td>
+          <td>{{ topic.Publisher.username }}</td>
+          <td>{{ topic.last_updated }}</td>
+        </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+{% endblock %}
